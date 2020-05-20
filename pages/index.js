@@ -33,7 +33,6 @@ export default function Home({ allPostsData }) {
       </section>
       <section>
         <p>
-          !!!!!!!!!
           <Link href="/questions">
             <a>Questions</a>
           </Link>
