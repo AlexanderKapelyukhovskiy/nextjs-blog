@@ -24,6 +24,7 @@ export async function getStaticProps({ params }) {
 
 export default function Questions({ questionData }) {
   const [questions, setQuestions] = useState({ ...questionData });
+  const [studentName, setStudentName] = useState("");
 
   function findFirst(elements, condition) {
     const element = elements.find(condition);
@@ -34,16 +35,43 @@ export default function Questions({ questionData }) {
     const q = questions.questions.map((q) => {
       return q.questionId === question.questionId ? { ...q, answerId } : q;
     });
-    const finished = !q.find((qq) => !qq.answerId);
+    const finished = !q.find((q) => !q.answerId);
     const correctAnswers = q.filter((q) => q.answerId === q.correctAnswerId)
       .length;
 
-    setQuestions({
+    const newState = {
       ...questions,
       questions: q,
       finished,
       correctAnswers,
-    });
+    };
+
+    if (finished) {
+      fetch("/api/results", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(newState),
+      });
+    }
+
+    setQuestions(newState);
+  }
+
+  function onEnterName() {
+    if (studentName) {
+      setQuestions({
+        ...questions,
+        studentName,
+      });
+    } else {
+      alert("Please provide your name");
+    }
+  }
+
+  function onStudentNameChange(e) {
+    setStudentName(e.target.value);
   }
 
   return (
@@ -56,21 +84,33 @@ export default function Questions({ questionData }) {
         <div className={utilStyles.lightText}>
           <Date dateString={questions.date} />
         </div>
-        {!questions.finished &&
-          findFirst(questions.questions, (q) => !q.answerId).map((q) => (
-            <div key={q.questionId}>
-              <h2>{q.question}</h2>
-              {q.answers.map(({ answerId, answer }) => (
-                <div key={answerId}>
-                  <p>
-                    <button onClick={() => onSelect(q, answerId)}>
-                      <h2>{answer}</h2>
-                    </button>
-                  </p>
-                </div>
-              ))}
-            </div>
-          ))}
+        {!questions.studentName && (
+          <div>
+            <h3>Your name please:</h3>
+            <input type="text" onChange={onStudentNameChange}></input>
+            <button onClick={() => onEnterName()}>submit</button>
+          </div>
+        )}
+
+        {questions.studentName && !questions.finished && (
+          <div>
+            <h2>Hi, {studentName}!</h2>
+            {findFirst(questions.questions, (q) => !q.answerId).map((q) => (
+              <div key={q.questionId}>
+                <h2>{q.question}</h2>
+                {q.answers.map(({ answerId, answer }) => (
+                  <div key={answerId}>
+                    <p>
+                      <button onClick={() => onSelect(q, answerId)}>
+                        <h2>{answer}</h2>
+                      </button>
+                    </p>
+                  </div>
+                ))}
+              </div>
+            ))}
+          </div>
+        )}
         {questions.finished && (
           <div>
             <p>Congrats!</p>
