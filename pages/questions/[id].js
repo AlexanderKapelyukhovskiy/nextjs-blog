@@ -58,20 +58,15 @@ export default function Questions({ questionData }) {
         </div>
         {!questions.finished &&
           findFirst(questions.questions, (q) => !q.answerId).map((q) => (
-            //({ question, questionId, answers, correctAnswerId }) => (
             <div key={q.questionId}>
-              {q.question}
+              <h2>{q.question}</h2>
               {q.answers.map(({ answerId, answer }) => (
                 <div key={answerId}>
-                  <button
-                    onClick={() => {
-                      onSelect(q, answerId);
-                      //console.log(answerId + " " + correctAnswerId);
-                      //alert(answerId === correctAnswerId ? "ДА!" : "НЕТ :(");
-                    }}
-                  >
-                    {answer}
-                  </button>
+                  <p>
+                    <button onClick={() => onSelect(q, answerId)}>
+                      <h2>{answer}</h2>
+                    </button>
+                  </p>
                 </div>
               ))}
             </div>
