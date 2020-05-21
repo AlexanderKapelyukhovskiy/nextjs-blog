@@ -4,6 +4,7 @@ import Head from "next/head";
 import { getAllQuestionIds, getQuestionData } from "../../lib/questions";
 import Date from "../../components/date";
 import utilStyles from "../../styles/utils.module.css";
+import Email from "../../components/email";
 
 export async function getStaticPaths() {
   const paths = getAllQuestionIds();
@@ -117,6 +118,9 @@ export default function Questions({ questionData }) {
             <p>
               Your score is: {questions.correctAnswers} /{" "}
               {questions.questions.length}
+            </p>
+            <p>
+              <Email questions={questions} hideTitle />
             </p>
           </div>
         )}
