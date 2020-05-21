@@ -25,7 +25,7 @@ const data = {
       correctAnswerId: 4,
     },
     {
-      questionId: 2,
+      questionId: 3,
       question: "какого цвета глаза у Саши?",
       answers: [
         { answerId: 1, answer: "белые" },
