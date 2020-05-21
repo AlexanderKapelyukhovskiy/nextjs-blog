@@ -47,7 +47,7 @@ export default function Questions({ questionData }) {
   }
 
   return (
-    <Layout back="questions">
+    <Layout back="questions" hideHeader>
       <Head>
         <title>{questions.title}</title>
       </Head>
