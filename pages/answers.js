@@ -1,8 +1,8 @@
 import Head from "next/head";
-import Layout, { siteTitle } from "../../components/layout";
-import utilStyles from "../../styles/utils.module.css";
-import { getAnswers } from "../../lib/questionDb";
-import AnswersComponent from "../../components/answers";
+import Layout, { siteTitle } from "../components/layout";
+import utilStyles from "../styles/utils.module.css";
+import { getAnswers } from "../lib/questionDb";
+import AnswersComponent from "../components/answers";
 
 export async function getStaticProps() {
   const answers = (await getAnswers()).map((a) => ({ ...a, _id: 0 }));
