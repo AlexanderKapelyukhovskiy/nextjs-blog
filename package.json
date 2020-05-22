@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "test": "babel-node tests/test.js"
+    "test": "babel-node tests/test.js",
+    "testDb": "babel-node -r dotenv/config tests/dbTests.js"
   },
   "dependencies": {
     "date-fns": "^2.14.0",
@@ -22,6 +23,9 @@
     "@babel/node": "^7.8.7",
     "@babel/preset-env": "^7.9.6",
     "@babel/preset-react": "^7.9.4",
-    "@babel/runtime": "^7.9.6"
+    "@babel/runtime": "^7.9.6",
+    "dotenv": "^8.2.0",
+    "dotenv-webpack": "^1.8.0",
+    "mongodb": "^3.5.7"
   }
 }
