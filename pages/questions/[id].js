@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import Layout from "../../components/layout";
 import Head from "next/head";
 import { getAllQuestionIds, getQuestionData } from "../../lib/questions";
-import Date from "../../components/date";
+import DateComponent from "../../components/date";
 import utilStyles from "../../styles/utils.module.css";
-import Email from "../../components/email";
+import Answers from "../../components/answers";
 
 export async function getStaticPaths() {
   const paths = getAllQuestionIds();
@@ -53,7 +53,7 @@ export default function Questions({ questionData }) {
         headers: {
           "Content-Type": "application/json",
         },
-        body: JSON.stringify(newState),
+        body: JSON.stringify({ ...newState, finishedAt: new Date() }),
       });
     }
 
@@ -83,7 +83,7 @@ export default function Questions({ questionData }) {
       <article>
         <h1 className={utilStyles.headingXl}>{questions.title}</h1>
         <div className={utilStyles.lightText}>
-          <Date dateString={questions.date} />
+          <DateComponent dateString={questions.date} />
         </div>
         {!questions.studentName && (
           <div>
@@ -120,7 +120,7 @@ export default function Questions({ questionData }) {
               {questions.questions.length}
             </p>
             <p>
-              <Email questions={questions} hideTitle />
+              <Answers questions={questions} hideTitle />
             </p>
           </div>
         )}

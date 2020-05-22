@@ -1,6 +1,7 @@
 import React from "react";
 
 export default function Email({ questions, hideTitle }) {
+  console.log(questions);
   return (
     <div>
       {!hideTitle && <h2>{questions.title}</h2>}

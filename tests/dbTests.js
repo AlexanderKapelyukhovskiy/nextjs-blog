@@ -1,12 +1,11 @@
-import { getAnswer, insertAnswer } from "../lib/questionDb";
+import { getAnswers, insertAnswer } from "../lib/questionDb";
 import question from "../questions/i-know-color-of-your-eyes";
 
 async function test() {
-  const url = process.env.MONGO_URL;
-  let res = await insertAnswer(url, question);
+  let res = await insertAnswer(question);
   console.log(res);
 
-  res = await getAnswer(url);
+  res = await getAnswers();
   console.log(res);
 }
 
