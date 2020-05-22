@@ -1,9 +1,22 @@
+import React, { useEffect, useState } from "react";
 import Head from "next/head";
 import Layout, { siteTitle } from "../components/layout";
 import utilStyles from "../styles/utils.module.css";
 import AnswersComponent from "../components/answers";
 
-function Answers({ answers }) {
+function Answers() {
+  const [answers, setAnswers] = useState([]);
+
+  useEffect(() => {
+    fetch("/api/results")
+      .then((a) => {
+        return a.json();
+      })
+      .then((json) => {
+        return setAnswers(json);
+      });
+  }, []);
+
   return (
     <Layout hideHeader>
       <Head>
@@ -47,15 +60,15 @@ function Answers({ answers }) {
   );
 }
 
-Answers.getInitialProps = (ctx) => {
-  const promise = fetch("/api/results")
-    .then((a) => {
-      return a.json();
-    })
-    .then((json) => {
-      return { answers: json };
-    });
-  return promise;
-};
+// Answers.getInitialProps = (ctx) => {
+//   const promise = fetch("/api/results")
+//     .then((a) => {
+//       return a.json();
+//     })
+//     .then((json) => {
+//       return { answers: json };
+//     });
+//   return promise;
+// };
 
 export default Answers;
