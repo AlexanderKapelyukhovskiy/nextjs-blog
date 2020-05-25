@@ -62,7 +62,11 @@ export default function Questions({ questionData }) {
           return result.json();
         })
         .then((json) => {
-          setQuestions({ ...json, finished });
+          const correctAnswers = json.questions.filter(
+            (q) => q.answerId === q.correctAnswerId
+          ).length;
+
+          setQuestions({ ...json, finished, correctAnswers });
         });
     } else {
       setQuestions(newState);
