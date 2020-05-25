@@ -102,9 +102,12 @@ export default function Questions({ questionData }) {
                 {q.answers.map(({ answerId, answer }) => (
                   <div key={answerId}>
                     <p>
-                      <button onClick={() => onSelect(q, answerId)}>
+                      <a
+                        href="javascript:void(0);"
+                        onClick={() => onSelect(q, answerId)}
+                      >
                         <h2>{answer}</h2>
-                      </button>
+                      </a>
                     </p>
                   </div>
                 ))}
