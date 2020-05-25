@@ -5,6 +5,7 @@ import { getAllQuestionIds, getQuestionData } from "../../lib/questions";
 import DateComponent from "../../components/date";
 import utilStyles from "../../styles/utils.module.css";
 import Answers from "../../components/answers";
+import Cookies from "universal-cookie";
 
 export async function getStaticPaths() {
   const paths = getAllQuestionIds();
@@ -24,8 +25,10 @@ export async function getStaticProps({ params }) {
 }
 
 export default function Questions({ questionData }) {
-  const [questions, setQuestions] = useState({ ...questionData });
-  const [studentName, setStudentName] = useState("");
+  const cookies = new Cookies();
+
+  const [studentName, setStudentName] = useState(cookies.get("studentName"));
+  const [questions, setQuestions] = useState({ ...questionData, studentName });
 
   function findFirst(elements, condition) {
     const element = elements.find(condition);
@@ -62,6 +65,7 @@ export default function Questions({ questionData }) {
 
   function onEnterName() {
     if (studentName) {
+      cookies.set("studentName", studentName, { path: "/" });
       setQuestions({
         ...questions,
         studentName,
@@ -69,6 +73,14 @@ export default function Questions({ questionData }) {
     } else {
       alert("Please provide your name");
     }
+  }
+
+  function handleClearStudentName() {
+    cookies.remove("studentName", { path: "/" });
+    setQuestions({
+      ...questions,
+      studentName: null,
+    });
   }
 
   function onStudentNameChange(e) {
@@ -95,7 +107,16 @@ export default function Questions({ questionData }) {
 
         {questions.studentName && !questions.finished && (
           <div>
-            <h2>Hi, {studentName}!</h2>
+            <h2>
+              Hi, {studentName}! (
+              <a
+                href="javascript:void(0);"
+                onClick={() => handleClearStudentName()}
+              >
+                not {studentName}?
+              </a>
+              )
+            </h2>
             {findFirst(questions.questions, (q) => !q.answerId).map((q) => (
               <div key={q.questionId}>
                 <h2>{q.question}</h2>
