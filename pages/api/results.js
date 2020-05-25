@@ -1,12 +1,11 @@
-import { insertAnswer, getAnswers } from "../../lib/questionDb";
-import { getQuestionData } from "../../lib/questions";
+import { insertAnswer, getAnswers, getQuestion } from "../../lib/questionDb";
 
 export default async (req, res) => {
   if (req.method === "POST") {
     console.log(req.body);
     try {
       const answer = req.body;
-      const questionData = getQuestionData(answer.id);
+      const questionData = await getQuestion(answer.id);
 
       console.log(questionData.questions);
 
