@@ -2,10 +2,17 @@ import Head from "next/head";
 import Layout, { siteTitle } from "../components/layout";
 import utilStyles from "../styles/utils.module.css";
 import { getQuestions } from "../lib/questions";
+import { getAnswers } from "../lib/questionDb";
 import Link from "next/link";
 import Date from "../components/date";
 
 export async function getStaticProps() {
+  const questionsDb = await getAnswers();
+
+  console.log("$$$$$$$");
+  console.log(questionsDb);
+  console.log("$$$$$$$");
+
   const allQuestions = getQuestions();
   return {
     props: {
