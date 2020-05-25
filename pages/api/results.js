@@ -1,10 +1,23 @@
 import { insertAnswer, getAnswers } from "../../lib/questionDb";
+import { getQuestionData } from "../../lib/questions";
 
 export default async (req, res) => {
   if (req.method === "POST") {
     console.log(req.body);
     try {
-      let result = await insertAnswer(req.body);
+      const answer = req.body;
+      const questionData = getQuestionData(answer.id);
+
+      console.log(questionData.questions);
+
+      answer.questions.forEach((q) => {
+        q.correctAnswerId = questionData.questions.find(
+          (qq) => qq.questionId === q.questionId
+        ).correctAnswerId;
+      });
+
+      const result = await insertAnswer(answer);
+
       res.status(201).json(result);
     } catch (error) {
       res.status(400).send(error);

@@ -17,6 +17,10 @@ export async function getStaticPaths() {
 
 export async function getStaticProps({ params }) {
   const questionData = await getQuestionData(params.id);
+  questionData.questions.forEach((q) => {
+    q.correctAnswerId = 0;
+  });
+  console.log(questionData.questions[0]);
   return {
     props: {
       questionData,
@@ -40,14 +44,10 @@ export default function Questions({ questionData }) {
       return q.questionId === question.questionId ? { ...q, answerId } : q;
     });
     const finished = !q.find((q) => !q.answerId);
-    const correctAnswers = q.filter((q) => q.answerId === q.correctAnswerId)
-      .length;
 
     const newState = {
       ...questions,
       questions: q,
-      finished,
-      correctAnswers,
     };
 
     if (finished) {
@@ -57,10 +57,16 @@ export default function Questions({ questionData }) {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ ...newState, finishedAt: new Date() }),
-      });
+      })
+        .then((result) => {
+          return result.json();
+        })
+        .then((json) => {
+          setQuestions({ ...json, finished });
+        });
+    } else {
+      setQuestions(newState);
     }
-
-    setQuestions(newState);
   }
 
   function onEnterName() {
