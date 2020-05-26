@@ -2,17 +2,17 @@ import { insertAnswer, getAnswers, getQuestion } from "../../lib/questionDb";
 
 export default async (req, res) => {
   if (req.method === "POST") {
-    console.log(req.body);
     try {
       const answer = req.body;
       const questionData = await getQuestion(answer.id);
 
-      console.log(questionData.questions);
+      //console.log(questionData.questions);
 
       answer.questions.forEach((q) => {
-        q.correctAnswerId = questionData.questions.find(
-          (qq) => qq.questionId === q.questionId
-        ).correctAnswerId;
+        q.correct =
+          q.answerId ===
+          questionData.questions.find((qq) => qq.questionId === q.questionId)
+            .correctAnswerId;
       });
 
       const result = await insertAnswer(answer);
@@ -24,6 +24,12 @@ export default async (req, res) => {
   } else {
     try {
       var answers = await getAnswers();
+      answers.forEach((a) =>
+        a.questions.forEach((q) => {
+          q.correct = q.correct ?? q.answerId === q.correctAnswerId;
+          q.correctAnswerId = 0;
+        })
+      );
       res.status(200).json([...answers]);
     } catch (error) {
       res.status(400).send(JSON.stringify(error) + error.stack);
