@@ -25,6 +25,7 @@ function Answers() {
       <section className={`${utilStyles.headingMd} ${utilStyles.padding1px}`}>
         <h2 className={utilStyles.headingLg}>Answers</h2>
         <ul className={utilStyles.list}>
+          {!answers.length && <div>Loading...</div>}
           {answers &&
             answers.map(
               ({

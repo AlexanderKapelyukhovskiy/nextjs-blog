@@ -51,6 +51,7 @@ export default function Questions({ questionData }) {
     };
 
     if (finished) {
+      setQuestions({ ...newState, loading: true });
       fetch("/api/results", {
         method: "POST",
         headers: {
@@ -64,7 +65,7 @@ export default function Questions({ questionData }) {
         .then((json) => {
           const correctAnswers = json.questions.filter((q) => q.correct).length;
 
-          setQuestions({ ...json, finished, correctAnswers });
+          setQuestions({ ...json, finished, correctAnswers, loading: false });
         });
     } else {
       setQuestions(newState);
@@ -144,6 +145,7 @@ export default function Questions({ questionData }) {
             ))}
           </div>
         )}
+        {questions.loading && <div>Loading...</div>}
         {questions.finished && (
           <div>
             <p>Congrats!</p>
