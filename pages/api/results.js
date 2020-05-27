@@ -19,7 +19,7 @@ export default async (req, res) => {
 
       res.status(201).json(result);
     } catch (error) {
-      res.status(400).send(error);
+      res.status(400).send(JSON.stringify(error) + error.stack);
     }
   } else {
     try {
